@@ -1,8 +1,5 @@
-﻿#include <iostream>
-#include <string>
-#include <vector>
-#include "calculator_operations.h"
-#include "calculator.h"
+﻿#include "calculator_operations.h"
+#include "calculator_class.h"
 
 using namespace std;
 
