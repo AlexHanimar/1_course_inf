@@ -1,6 +1,9 @@
 #pragma once
-#include "operations_exceptions.h"
+#ifndef OPERATIONS
+#define OPERATIONS
+
 #include <vector>
+#include <string>
 namespace oper {
 	template<typename returnType, typename argType, size_t argNum>
 	class Operation
@@ -11,17 +14,17 @@ namespace oper {
 		Operation(const std::vector<argType>& args)
 		{
 			if (args.size() < argNum)
-				throw op_except::tooFewArguments;
+				throw std::string("too few arguments");
 			else if (args.size() > argNum)
-				throw op_except::tooManyArguments;
+				throw std::string("too many arguments");
 			this->args = args;
 		}
 		void setArgs(const std::vector<argType>& args)
 		{
 			if (args.size() < argNum)
-				throw op_except::tooFewArguments;
+				throw std::string("too few arguments");
 			else if (args.size() > argNum)
-				throw op_except::tooManyArguments;
+				throw std::string("too many arguments");
 			this->args = args;
 		}
 		virtual returnType exec(void) = 0;
@@ -48,30 +51,12 @@ namespace oper {
 		}
 	};
 
-	class BitwiseInvertion : public UnaryOperation<int, int>
+	class BitInvertion : public UnaryOperation<int, int>
 	{
 	public:
 		int exec(void)
 		{
 			return ~args.back();
-		}
-	};
-
-	class Increment : public UnaryOperation<void, int>
-	{
-	public:
-		void exec(void)
-		{
-			++args.back();
-		}
-	};
-
-	class Decrement : public UnaryOperation<void, int>
-	{
-	public:
-		void exec(void)
-		{
-			--args.back();
 		}
 	};
 
@@ -95,4 +80,35 @@ namespace oper {
 			return args[0] + args[1];
 		}
 	};
+
+	class Diff : public BinaryOperation<double, double>
+	{
+	public:
+		double exec(void)
+		{
+			return args[0] - args[1];
+		}
+	};
+
+	class Mult : public BinaryOperation<double, double>
+	{
+	public:
+		double exec(void)
+		{
+			return args[0] * args[1];
+		}
+	};
+
+	class DivD : public BinaryOperation<double, double>
+	{
+	public:
+		double exec(void)
+		{
+			if (args[1] == 0)
+				throw std::string("division by zero");
+			return args[0] / args[1];
+		}
+	};
 }
+
+#endif

@@ -23,8 +23,5 @@
     <ClInclude Include="operations.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="operations_exceptions.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

@@ -131,7 +131,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="operations.h" />
-    <ClInclude Include="operations_exceptions.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
