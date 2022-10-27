@@ -4,6 +4,24 @@ Token::Token(void) : type{ '\0' }, val{ 0 } {}
 Token::Token(char _type) : type{ _type }, val{ 0 } {}
 Token::Token(char _type, long double _val) : type{ _type }, val{ _val } {}
 
+bool isAllowed(char c)
+{
+	switch (c) {
+	case OperType::Sum:
+	case OperType::Diff:
+	case OperType::Mult:
+	case OperType::Div:
+		return true;
+	default:
+		break;
+	}
+	if ('0' <= c && c <= '9')
+		return true;
+	if (c == '.')
+		return true;
+	return false;
+}
+
 char Token::tokenType(void)
 {
 	return type;
@@ -16,6 +34,7 @@ long double Token::tokenVal(void)
 
 TokenStream::TokenStream(void) : lastAdded{ Token() }, st{ nullptr } {}
 TokenStream::TokenStream(std::stack<Token>& _st) : st{ &_st } {}
+
 Token TokenStream::get(void)
 {
 	if (!st) {

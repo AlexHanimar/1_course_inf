@@ -21,6 +21,8 @@ enum NumType
 	Float = 'd'
 };
 
+bool isAllowed(char c);
+
 class Token
 {
 private:
