@@ -32,6 +32,31 @@ long double Token::tokenVal(void)
 	return val;
 }
 
+bool isOper(Token t)
+{
+	switch (t.tokenType()) {
+	case OperType::Diff:case OperType::Div:case OperType::Mult:case OperType::Sum:
+		return true;
+	default:
+		return false;
+	}
+}
+
+bool isNum(Token t)
+{
+	switch (t.tokenType()) {
+	case NumType::Float:case NumType::Int:
+		return true;
+	default:
+		return false;
+	}
+}
+
+const Token nullToken(void)
+{
+	return Token(0, 0);
+}
+
 TokenStream::TokenStream(void) : lastAdded{ Token() }, st{ nullptr } {}
 TokenStream::TokenStream(std::stack<Token>& _st) : st{ &_st } {}
 

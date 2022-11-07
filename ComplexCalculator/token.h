@@ -38,6 +38,11 @@ public:
 	friend class TokenStream;
 };
 
+const Token nullToken(void);
+
+bool isOper(Token t);
+bool isNum(Token t);
+
 class TokenStream
 {
 private:

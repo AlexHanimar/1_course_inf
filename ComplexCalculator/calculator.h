@@ -4,16 +4,29 @@
 
 #include "token.h"
 #include "operations.h"
+#include "linked_list.h"
 
-class Parser
+class Lexer
 {
 private:
 	std::string query;
 public:
-	Parser(void);
-	Parser(std::string _query);
-	void setQuery(std::string _query);
+	Lexer(void);
+	Lexer(std::string);
+	void setQuery(std::string);
 	std::stack<Token> tokenize(void);
+};
+
+class Parser
+{
+private:
+	LinkedList<Token> tokens;
+public:
+	Parser(void);
+	Parser(std::stack<Token>);
+	void printTokenList(std::ostream&);
+	void normalizeList(void);
+	Token processList(Node<Token>*);
 };
 
 class Calculator
