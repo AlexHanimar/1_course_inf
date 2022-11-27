@@ -11,6 +11,10 @@ bool isAllowed(char c)
 	case OperType::Diff:
 	case OperType::Mult:
 	case OperType::Div:
+	case OperType::OpBrace:
+	case OperType::ClBrace:
+	case OperType::Endl:
+	case OperType::Exit:
 		return true;
 	default:
 		break;
@@ -22,12 +26,12 @@ bool isAllowed(char c)
 	return false;
 }
 
-char Token::tokenType(void)
+char Token::tokenType(void) const
 {
 	return type;
 }
 
-long double Token::tokenVal(void)
+long double Token::tokenVal(void) const
 {
 	return val;
 }
@@ -35,7 +39,14 @@ long double Token::tokenVal(void)
 bool isOper(Token t)
 {
 	switch (t.tokenType()) {
-	case OperType::Diff:case OperType::Div:case OperType::Mult:case OperType::Sum:
+	case OperType::Diff:
+	case OperType::Div:
+	case OperType::Mult:
+	case OperType::Sum:
+	case OperType::OpBrace:
+	case OperType::ClBrace:
+	case OperType::Endl:
+	case OperType::Exit:
 		return true;
 	default:
 		return false;

@@ -4,55 +4,36 @@
 
 #include "token.h"
 #include <cmath>
+#include <array>
 
+template<size_t argc>
 class Operation
 {
-protected:
-	std::stack<Token> args;
 public:
-	Operation(void);
-	Operation(std::stack<Token>&);
-	Operation(std::initializer_list<Token>&);
-	void setArgs(std::stack<Token>&);
-	void setArgs(std::initializer_list<Token>&);
-	virtual Token exec(void) = 0;
+	static Token eval(const std::array<Token, argc>& arr);
 };
 
-class UnaryOperation : public Operation
-{
-public:
-	UnaryOperation(std::stack<Token>&);
-	UnaryOperation(std::initializer_list<Token>&);
-	virtual Token exec(void) = 0;
-};
+class BinaryOperation : Operation<2> {};
 
-class BinaryOperation : public Operation
+class Sum : BinaryOperation
 {
 public:
-	BinaryOperation(std::stack<Token>&);
-	BinaryOperation(std::initializer_list<Token>&);
-	virtual Token exec(void) = 0;
+	static Token eval(const std::array<Token, 2>& arr);
+}; 
+class Diff : BinaryOperation
+{
+public:
+	static Token eval(const std::array<Token, 2>& arr);
 };
-
-class Sum : public BinaryOperation
+class Mult : BinaryOperation
 {
 public:
-	Token exec(void);
+	static Token eval(const std::array<Token, 2>& arr);
 };
-class Diff : public BinaryOperation
+class Div : BinaryOperation
 {
 public:
-	Token exec(void);
-};
-class Mult : public BinaryOperation
-{
-public:
-	Token exec(void);
-};
-class Div : public BinaryOperation
-{
-public:
-	Token exec(void);
+	static Token eval(const std::array<Token, 2>& arr);
 };
 
 #endif

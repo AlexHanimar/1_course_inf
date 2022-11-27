@@ -25,13 +25,25 @@ public:
 	Parser(void);
 	Parser(std::stack<Token>);
 	void printTokenList(std::ostream&);
-	void normalizeList(void);
-	Token processList(Node<Token>*);
+	void setTokens(std::stack<Token>);
+
+	void closeList(void);
+
+	Token getToken(void);
+	void putToken(Token t);
+	Token expression(void);
+	Token term(void);
+	Token primary(void);
 };
 
 class Calculator
 {
-
+private:
+	Lexer lx;
+	Parser ps;
+public:
+	Calculator(void);
+	void mainCycle(void);
 };
 
 #endif

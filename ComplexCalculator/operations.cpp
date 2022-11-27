@@ -1,175 +1,45 @@
 #include "operations.h"
 
-Operation::Operation(void) {}
-Operation::Operation(std::stack<Token>& st) : args{ st } {}
-Operation::Operation(std::initializer_list<Token>& l) : args{ l } {}
-void Operation::setArgs(std::stack<Token>& st) { args = st; }
-void Operation::setArgs(std::initializer_list<Token>& l) { args = std::stack<Token>{ l }; }
-
-UnaryOperation::UnaryOperation(std::stack<Token>& st)
+Token Sum::eval(const std::array<Token, 2>& arr)
 {
-	if (st.size() != 1) {
-		throw std::string("Incorrect number of arguments : expected 1 Tokens, got " + std::to_string(st.size()));
-	}
-	args = st;
-}
-
-UnaryOperation::UnaryOperation(std::initializer_list<Token>& l)
-{
-	if (l.size() != 1) {
-		throw std::string("Incorrect number of arguments : expected 1 Tokens, got " + std::to_string(l.size()));
-	}
-	args = std::stack<Token>{l};
-}
-
-BinaryOperation::BinaryOperation(std::stack<Token>& st)
-{
-	if (st.size() != 2) {
-		throw std::string("Incorrect number of arguments : expected 2 Tokens, got " + std::to_string(st.size()));
-	}
-	args = st;
-}
-
-BinaryOperation::BinaryOperation(std::initializer_list<Token>& l)
-{
-	if (l.size() != 2) {
-		throw std::string("Incorrect number of arguments : expected 2 Tokens, got " + std::to_string(l.size()));
-	}
-	args = std::stack<Token>{ l };
-}
-
-Token Sum::exec(void)
-{
-	TokenStream ts(args);
+	if (!isNum(arr[0]) || !isNum(arr[1]))
+		throw "err";
 	char resType = NumType::Int;
-	Token arg1, arg2;
-	ts >> arg2 >> arg1;
-	switch (arg1.tokenType()) {
-	case NumType::Float:
+	if ((arr[0].tokenType() == NumType::Float) || (arr[1].tokenType() == NumType::Float))
 		resType = NumType::Float;
-		break;
-	case NumType::Int:
-		break;
-	default:
-		throw std::string("Incorrect type : expected NumType, got " + arg1.tokenType());
-	}
-	switch (arg2.tokenType()) {
-	case NumType::Float:
-		resType = NumType::Float;
-		break;
-	case NumType::Int:
-		break;
-	default:
-		throw std::string("Incorrect type : expected NumType, got " + arg2.tokenType());
-	}
-	switch (resType) {
-	case NumType::Float:
-		return Token(resType, arg1.tokenVal() + arg2.tokenVal());
-	case NumType::Int:
-		return Token(resType, floor(arg1.tokenVal()) + floor(arg2.tokenVal()));
-	default:
-		throw std::string("Something went wrong");
-	}
+	return Token(resType, arr[0].tokenVal() + arr[1].tokenVal());
 }
-Token Diff::exec(void)
+Token Diff::eval(const std::array<Token, 2>& arr)
 {
-	TokenStream ts(args);
+	if (!isNum(arr[0]) || !isNum(arr[1]))
+		throw "err";
 	char resType = NumType::Int;
-	Token arg1, arg2;
-	ts >> arg2 >> arg1;
-	switch (arg1.tokenType()) {
-	case NumType::Float:
+	if ((arr[0].tokenType() == NumType::Float) || (arr[1].tokenType() == NumType::Float))
 		resType = NumType::Float;
-		break;
-	case NumType::Int:
-		break;
-	default:
-		throw std::string("Incorrect type : expected NumType, got " + arg1.tokenType());
-	}
-	switch (arg2.tokenType()) {
-	case NumType::Float:
-		resType = NumType::Float;
-		break;
-	case NumType::Int:
-		break;
-	default:
-		throw std::string("Incorrect type : expected NumType, got " + arg2.tokenType());
-	}
-	switch (resType) {
-	case NumType::Float:
-		return Token(resType, arg1.tokenVal() - arg2.tokenVal());
-	case NumType::Int:
-		return Token(resType, floor(arg1.tokenVal()) - floor(arg2.tokenVal()));
-	default:
-		throw std::string("Something went wrong");
-	}
+	return Token(resType, arr[0].tokenVal() - arr[1].tokenVal());
 }
-Token Mult::exec(void)
+Token Mult::eval(const std::array<Token, 2>& arr)
 {
-	TokenStream ts(args);
+	if (!isNum(arr[0]) || !isNum(arr[1]))
+		throw "err";
 	char resType = NumType::Int;
-	Token arg1, arg2;
-	ts >> arg2 >> arg1;
-	switch (arg1.tokenType()) {
-	case NumType::Float:
+	if ((arr[0].tokenType() == NumType::Float) || (arr[1].tokenType() == NumType::Float))
 		resType = NumType::Float;
-		break;
-	case NumType::Int:
-		break;
-	default:
-		throw std::string("Incorrect type : expected NumType, got " + arg1.tokenType());
-	}
-	switch (arg2.tokenType()) {
-	case NumType::Float:
-		resType = NumType::Float;
-		break;
-	case NumType::Int:
-		break;
-	default:
-		throw std::string("Incorrect type : expected NumType, got " + arg2.tokenType());
-	}
-	switch (resType) {
-	case NumType::Float:
-		return Token(resType, arg1.tokenVal() * arg2.tokenVal());
-	case NumType::Int:
-		return Token(resType, floor(arg1.tokenVal()) * floor(arg2.tokenVal()));
-	default:
-		throw std::string("Something went wrong");
-	}
+	return Token(resType, arr[0].tokenVal() * arr[1].tokenVal());
 }
-Token Div::exec(void)
+Token Div::eval(const std::array<Token, 2>& arr)
 {
-	TokenStream ts(args);
+	if (!isNum(arr[0]) || !isNum(arr[1]))
+		throw "err";
+	if (arr[0].tokenVal() == 0.0)
+		throw "err";
 	char resType = NumType::Int;
-	Token arg1, arg2;
-	ts >> arg2 >> arg1;
-	switch (arg1.tokenType()) {
-	case NumType::Float:
+	if ((arr[0].tokenType() == NumType::Float) || (arr[1].tokenType() == NumType::Float))
 		resType = NumType::Float;
-		break;
-	case NumType::Int:
-		break;
-	default:
-		throw std::string("Incorrect type : expected NumType, got " + arg1.tokenType());
-	}
-	switch (arg2.tokenType()) {
-	case NumType::Float:
-		resType = NumType::Float;
-		break;
-	case NumType::Int:
-		break;
-	default:
-		throw std::string("Incorrect type : expected NumType, got " + arg2.tokenType());
-	}
-	if (arg2.tokenVal() == 0) {
-		throw std::string("Division by zero");
-	}
-	switch (resType) {
-	case NumType::Float:
-		return Token(resType, arg1.tokenVal() / arg2.tokenVal());
-	case NumType::Int:
-		return Token(resType, int(arg1.tokenVal()) / int(arg2.tokenVal()));
-	default:
-		throw std::string("Something went wrong");
-	}
+	long double resVal;
+	if (resType == NumType::Int)
+		resVal = int(arr[0].tokenVal()) / int(arr[1].tokenVal());
+	else
+		resVal = arr[0].tokenVal() / arr[1].tokenVal();
+	return Token(resType, resVal);
 }

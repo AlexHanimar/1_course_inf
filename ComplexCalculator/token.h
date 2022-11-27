@@ -12,7 +12,11 @@ enum OperType
 	Sum = '+',
 	Diff = '-',
 	Mult = '*',
-	Div = '/'
+	Div = '/',
+	OpBrace = '(',
+	ClBrace = ')',
+	Endl = ';',
+	Exit = 'q'
 };
 
 enum NumType
@@ -32,8 +36,8 @@ public:
 	Token(void);
 	Token(char _type);
 	Token(char _type, long double _val);
-	char tokenType(void);
-	long double tokenVal(void);
+	char tokenType(void) const;
+	long double tokenVal(void) const;
 	friend std::ostream& operator<<(std::ostream&, Token&);
 	friend class TokenStream;
 };
