@@ -6,20 +6,26 @@
 #include <concepts>
 
 template<typename T>
-concept NumBase = requires(T a, T b)
+concept NumBase = requires(T a, T b, double c)
 {
 	{a + b}		->	std::convertible_to<T>;
 	{a - b}		->	std::convertible_to<T>;
 	{a * b}		->	std::convertible_to<T>;
 	{a / b}		->	std::convertible_to<T>;
-	{1}			->	std::convertible_to<T>;
-	{0}			->	std::convertible_to<T>;
-	{a < b}		->	std::convertible_to<bool>;
 	{a == b}	->	std::convertible_to<bool>;
+	//{double(a)}	->	std::same_as<double>;
+	
+	//{T(c)}		->	std::convertible_to<T>;
 };
 
 template<typename T>
-concept IntNumBase = NumBase<T> && requires (T a, T b)
+concept CompNumBase = NumBase<T> && requires(T a, T b)
+{
+	{a < b}		->	std::convertible_to<bool>;
+};
+
+template<typename T>
+concept IntNumBase = CompNumBase<T> && requires (T a, T b)
 {
 	{a % b}		->	std::convertible_to<T>;
 };

@@ -141,10 +141,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Calculator.cpp" />
-    <ClCompile Include="token.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="calculator_class.h" />
     <ClInclude Include="complex.h" />
+    <ClInclude Include="grammar.h" />
     <ClInclude Include="numeric_base.h" />
     <ClInclude Include="rational.h" />
     <ClInclude Include="token.h" />

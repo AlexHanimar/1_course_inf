@@ -26,16 +26,32 @@ private:
 		}
 	} gcd;
 public:
-	Rational(void) :
-		num{ 0 },
-		den{ 1 } {}
-	Rational(T _num, T _den) {
+
+	// using narrowing conversion to check if number is whole, so disabling warning about it 
+#pragma warning(push)
+#pragma warning(disable:4244)
+	Rational(double x) 
+	{
+		T _den = 1;
+		while (T(x) != x) {
+			_den = _den * 10;
+			x = x * 10;
+		}
+		T _num = x;
+		num = x;
+		den = _den;
+		T d = gcd(num, den);
+		num = num / d;
+		den = den / d;
+	}
+#pragma warning(pop)
+
+	Rational(T _num = 0, T _den = 1) {
 		if (_den == 0) throw numeric_error("division_by_zero");
 		T _gcd = gcd(_num, _den);
 		num = _num / _gcd;
 		den = _den / _gcd;
 	}
-	Rational(T _num) : num{ _num }, den{ 1 } {}
 	Rational(const Rational& other) :
 		num{ other.num }, 
 		den{ other.den } {
@@ -46,6 +62,8 @@ public:
 	
 	~Rational(void) = default;
 	
+	// conversion from double
+
 	const Rational& operator=(const Rational& other)
 	{
 		if (this == &other)
@@ -84,7 +102,7 @@ public:
 	}
 	Rational operator/(const Rational& other) const
 	{
-		if (other == 0)
+		if (other == Rational(0.0))
 			throw numeric_error("division_by_zero");
 		return Rational(num * other.den, den * other.num);
 	}
@@ -113,6 +131,11 @@ public:
 	}
 
 	bool isWhole(void) { return (den == 1); }
+
+	operator double()
+	{
+		return double(num) / double(den);
+	}
 };
 
 #endif

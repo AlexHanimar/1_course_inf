@@ -15,9 +15,7 @@ private:
 	T re;
 	T im;
 public:
-	Complex(void) : re{ 0 }, im{ 0 } {}
-	Complex(T _re) : re{ _re }, im{ 0 } {}
-	Complex(T _re, T _im) : re{ _re }, im{ _im } {}
+	Complex(T _re = 0.0, T _im = 0.0) : re{ _re }, im{ _im } {}
 	Complex(const Complex& other) : re{ other.re }, im{ other.im } {};
 	Complex(Complex&& other) : re{ std::move(other.re) }, im{ std::move(other.im) } {}
 	
@@ -63,7 +61,7 @@ public:
 		T b = im;
 		T c = other.re;
 		T d = other.im;
-		if (c == 0 && d == 0)
+		if (c == T(0.0) && d == T(0.0))
 			throw numeric_error("division_by_zero");
 		T tre = a * c + b * d;
 		T tim = b * c - a * d;
@@ -93,11 +91,11 @@ public:
 
 	bool isReal(void) const
 	{
-		return (im == 0);
+		return (im == T(0.0));
 	}
 	bool isImg(void) const
 	{
-		return (re == 0);
+		return (re == T(0.0));
 	}
 
 	T Re(void) const
