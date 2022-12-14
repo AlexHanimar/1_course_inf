@@ -26,6 +26,11 @@ namespace token {
 		const token& operator=(const token& other) { type = other.type, val = other.val; return *this; }
 		bool operator==(const token& other) { return (type == other.type) && (val == other.val); }
 		constexpr static const token null(void) { return token(); }
+		friend std::ostream& operator<<(std::ostream& out, token& tok)
+		{
+			out << '(' << tok.type << '|' << tok.val << ')';
+			return out;
+		}
 	};
 
 	template<numeric_base::num_type T>

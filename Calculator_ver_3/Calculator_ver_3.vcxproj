@@ -131,6 +131,9 @@
     <ClCompile Include="Calculator_ver_3.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="calculator.h" />
+    <ClInclude Include="function_base.h" />
+    <ClInclude Include="numbers.h" />
     <ClInclude Include="numeric_base.h" />
     <ClInclude Include="token.h" />
   </ItemGroup>
