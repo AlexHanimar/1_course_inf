@@ -24,10 +24,7 @@ namespace func_base {
 	class function
 	{
 	public:
-		virtual void operator()(const std::vector<T>&, T&)
-		{
-			throw function_error("undefined operation");
-		}
+		virtual void operator()(const std::vector<T>&, T&) = 0;
 	};
 
 }

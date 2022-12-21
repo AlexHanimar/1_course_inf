@@ -24,22 +24,27 @@ namespace calc {
 		std::vector<std::pair<std::string, std::string>> braces;
 
 		int max_prior;
-		template<int mx>
+
+	public:
+
 		struct prior
 		{
 			int val;
-			prior(void) : val{ mx } {}
-			prior operator-(int step) 
-			{ 
-				prior<mx> res;
-				res.val -= step;
-				while (res.val < 0)
-					res.val += mx;
-				return res;
+			int mx;
+			prior(void) = delete;
+			prior(int _mx, int _val)
+			{
+				mx = _mx;
+				val = _val;
+				while (val < 0)
+					val += mx;
+			}
+			prior operator-(int step)
+			{
+				return prior(mx, val - step);
 			}
 		};
 
-	public:
 		grammar(void) = delete;
 		grammar(std::istream& _in,
 			std::ostream& _out,
@@ -50,6 +55,8 @@ namespace calc {
 			const std::vector<char> _exit_chars,
 			const std::map<std::string, func_type*>& _oper_table) 
 		{
+			if (_oper_by_prior.empty())
+				throw std::runtime_error("empty operator list");
 			in = &_in;
 			out = &_out;
 			oper_table = _oper_table;
@@ -59,21 +66,68 @@ namespace calc {
 			max_prior = oper_by_prior.size() - 1;
 #pragma warning(pop)
 			braces = _braces;
-			for (auto [f, s] : braces) {
-				oper_by_prior[0].push_back(f);
-				oper_by_prior[0].push_back(s);
-			}
 			std::vector<std::string> _allowed_words;
 			for (const std::vector<std::string>& v : _oper_by_prior) {
 				for (const std::string& word : v) {
 					_allowed_words.push_back(word);
 				}
 			}
+			for (auto [f, s] : _braces) {
+				_allowed_words.push_back(f);
+				_allowed_words.push_back(s);
+			}
 			ts = new token::token_stream<T>(_in,
 				_allowed_words,
 				_ignored_chars,
 				_endl_chars,
 				_exit_chars);
+		}
+
+		T term(prior p)
+		{
+			if (p.val == 0) {
+				token::token<T> tok = ts->get_token();
+				// processing numbers
+				if (tok.type == token::NUMBER)
+					return tok.val;
+				// processing braces
+				for (auto [op_brace, cl_brace] : braces) {
+					if (tok.type != op_brace)
+						continue;
+					T res = term(p - 1);
+					tok = ts->get_token();
+					if (tok.type != cl_brace)
+						throw std::runtime_error("no matching brace for " + op_brace);
+					return res;
+				}
+				// processing functions and unary operators
+				for (const std::string& oper : oper_by_prior[p.val]) {
+					if (oper == tok.type) {
+						func_type* func_ptr = oper_table[oper];
+						T res;
+						(*func_ptr)({ term(p) }, res);
+						return res;
+					}
+				}
+				// no match found: syntax error
+				throw std::runtime_error("syntax error");
+			} 
+			else {
+				T lhs = term(p - 1);
+				token::token<T> tok = ts->get_token();
+				while (true) {
+					for (const std::string& oper : oper_by_prior[p.val]) {
+						if (oper == tok.type) {
+							func_type* func_ptr = oper_table[oper];
+							(*func_ptr)({ lhs, term(p - 1) }, lhs);
+							tok = ts->get_token();
+							continue;
+						}
+					}
+					ts->putback(tok);
+					return lhs;
+				}
+			}
 		}
 
 	};

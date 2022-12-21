@@ -11,6 +11,10 @@
 
 namespace token {
 
+	const std::string NUMBER = "NUMBER";
+	const std::string EXIT = "EXIT";
+	const std::string ENDL = "ENDL";
+
 	class ts_error : public std::runtime_error {
 	public:
 		ts_error(const std::string& msg) : std::runtime_error(msg) {}
@@ -114,14 +118,14 @@ namespace token {
 				if (ignored(c))
 					continue;
 				if (str.empty() && is_endl(c))
-					return token<T>("ENDL");
+					return token<T>(ENDL);
 				if (str.empty() && is_exit(c))
-					return token<T>("EXIT");
+					return token<T>(EXIT);
 				if (str.empty() && T::can_start_with(c)) {
 					(*in).putback(c);
 					T val;
 					(*in) >> val;
-					return token<T>("NUMBER", val);
+					return token<T>(NUMBER, val);
 				}
 				if (can_be_extended(str + c)) {
 					str += c;

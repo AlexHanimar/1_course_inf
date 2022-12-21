@@ -13,10 +13,10 @@ namespace numbers {
 	public:
 		Double(void) : x{ 0 } {}
 		Double(double _x) : x{ _x } {}
-		Double operator+(const Double& _x) { return Double(x + _x.x); }
+		Double operator+(const Double& _x) const { return Double(x + _x.x); }
 		Double operator-() const { return Double(-x); }
-		Double operator*(const Double& _x) { return Double(x * _x.x); }
-		Double operator/(const Double& _x) { return Double(x / _x.x); }
+		Double operator*(const Double& _x) const { return Double(x * _x.x); }
+		Double operator/(const Double& _x) const { return Double(x / _x.x); }
 		bool operator==(const Double& _x) { return (x == _x.x); }
 		double mod(void) { return (x >= 0 ? x : -x); }
 		static Double zero(void) { return Double(); }
