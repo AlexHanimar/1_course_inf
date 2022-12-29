@@ -132,7 +132,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="calculator.h" />
+    <ClInclude Include="functions.h" />
     <ClInclude Include="function_base.h" />
+    <ClInclude Include="interface.h" />
     <ClInclude Include="numbers.h" />
     <ClInclude Include="numeric_base.h" />
     <ClInclude Include="token.h" />

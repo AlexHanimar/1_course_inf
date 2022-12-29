@@ -93,9 +93,9 @@ namespace token {
 		token_stream(void) = delete;
 		token_stream(std::istream& _in,
 			const std::vector<std::string>& _allowed_words,
-			const std::vector<char>& _ignored_chars = { ' ', '\n' },
-			const std::vector<char>& _endl_chars = { ';' },
-			const std::vector<char>& _exit_chars = { '#' }) :
+			const std::vector<char>& _ignored_chars,
+			const std::vector<char>& _endl_chars,
+			const std::vector<char>& _exit_chars) :
 			in{ &_in },
 			allowed_words{ _allowed_words },
 			ignored_chars{ _ignored_chars },
